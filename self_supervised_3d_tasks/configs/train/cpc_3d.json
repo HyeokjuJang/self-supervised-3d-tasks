@@ -1,6 +1,6 @@
 {
   "algorithm": "cpc",
-  "data_dir": "Task07_Pancreas/images_resized_128_bbox/",
+  "data_dir": "mri_npy/",
   "dataset_name": "pancreas3d",
 
   "data_is_3D": true,
