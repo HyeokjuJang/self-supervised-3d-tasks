@@ -1,7 +1,7 @@
 {
   "algorithm": "cpc",
-  "data_dir": "mri_npy/",
-  "dataset_name": "pancreas3d",
+  "data_dir": "mri_cube_npy/",
+  "dataset_name": "mri_data",
 
   "data_is_3D": true,
 

@@ -107,3 +107,7 @@ venv.bak/
 transfer_segmentation/.travis.yml
 
 mri_npy/
+mri_cube_npy/
+cpc_mri_data/
+jigsaw_mri_data/
+test_data/
