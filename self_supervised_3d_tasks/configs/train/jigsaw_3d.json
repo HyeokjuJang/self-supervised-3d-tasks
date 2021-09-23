@@ -16,5 +16,5 @@
   "batch_size": 8,
 
   "lr": 1e-4,
-  "epochs": 10000
+  "epochs": 1000
 }

@@ -1,4 +1,4 @@
-name: conda-env
+name: ss3d
 dependencies:
   - tensorflow-gpu=2.1
   - absl-py
