@@ -1,29 +1,28 @@
-name: conda-env
+name: ss3d
 dependencies:
-  - tensorflow-gpu=2.1
-  - absl-py
-  - h5py
-  - hdf5
-  - pandas
-  - python
-  - scikit-image
-  - scikit-learn
-  - scipy
-  - tensorboard
-  - requests
-  - cudatoolkit
-  - cudnn
-  - pip
-  - networkx==2.2
-  - seaborn
-  - tqdm
-  - pydot
-  - pip:
-    - tensorflow_hub
-    - nibabel
-    - hyperopt
-    - albumentations
-    - tensorflow_addons
-    - joblib
-    - opencv-python
-
+    - tensorflow-gpu=2.1.0
+    - absl-py
+    - h5py
+    - hdf5
+    - pandas
+    - python
+    - scikit-image
+    - scikit-learn
+    - scipy
+    - tensorboard=2.1.0
+    - requests
+    - cudatoolkit
+    - cudnn
+    - pip
+    - networkx==2.2
+    - seaborn
+    - tqdm
+    - pydot
+    - pip:
+          - tensorflow_hub
+          - nibabel
+          - hyperopt
+          - albumentations
+          - tensorflow_addons
+          - joblib
+          - opencv-python
