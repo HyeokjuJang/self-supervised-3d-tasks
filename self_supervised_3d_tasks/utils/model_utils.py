@@ -63,7 +63,7 @@ def init(f, name="training", n_gpus=1):
     print("{} {} with parameters: ".format(name, args))
     print("###########################################")
 
-    # aquire_free_gpus(amount=n_gpus, **args)
+    aquire_free_gpus(amount=n_gpus, **args)
     f(**args)
 
 
