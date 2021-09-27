@@ -1,0 +1,13 @@
+python train.py self_supervised_3d_tasks/configs/train/{algorithm}_{dimension}.json
+
+1. cpc
+python train.py self_supervised_3d_tasks/configs/train/cpc_3d.json
+2. jigsaw
+python train.py self_supervised_3d_tasks/configs/train/jigsaw_3d.json
+3. rotation
+python train.py self_supervised_3d_tasks/configs/train/rotation_3d.json
+4. rpl
+python train.py self_supervised_3d_tasks/configs/train/rpl_3d.json
+
+
+python finetune.py self_supervised_3d_tasks/configs/finetune/{algorithm}_{dimension}.json

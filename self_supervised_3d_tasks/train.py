@@ -3,7 +3,7 @@ from self_supervised_3d_tasks.utils.model_utils import init, print_flat_summary
 from pathlib import Path
 
 import tensorflow.keras as keras
-from self_supervised_3d_tasks.data.numpy_3d_loader import DataGeneratorUnlabeled3D, PatchDataGeneratorUnlabeled3D
+from self_supervised_3d_tasks.data.numpy_3d_loader import DataGeneratorUnlabeled3D, PatchDataGeneratorUnlabeled3D, DataGeneratorUnlabeled3DMRI
 
 from self_supervised_3d_tasks.data.make_data_generator import get_data_generators
 from self_supervised_3d_tasks.data.image_2d_loader import DataGeneratorUnlabeled2D
@@ -24,7 +24,8 @@ data_gen_list = {
     "pancreas2d": Numpy2DLoader,
     "brats": DataGeneratorUnlabeled3D,
     "ukb2d": DataGeneratorUnlabeled2D,
-    "ukb3d": PatchDataGeneratorUnlabeled3D
+    "ukb3d": PatchDataGeneratorUnlabeled3D,
+    "mri_data": DataGeneratorUnlabeled3DMRI
 }
 
 
@@ -45,7 +46,7 @@ def get_dataset(data_dir, batch_size, f_train, f_val, train_val_split, dataset_n
 
 
 def train_model(algorithm, data_dir, dataset_name, root_config_file, epochs=250, batch_size=2, train_val_split=0.9,
-                base_workspace="~/netstore/workspace/", save_checkpoint_every_n_epochs=5, **kwargs):
+                base_workspace="./workspace/", save_checkpoint_every_n_epochs=500, **kwargs):
     kwargs["root_config_file"] = root_config_file
 
     working_dir = get_writing_path(Path(base_workspace).expanduser() / (algorithm + "_" + dataset_name),

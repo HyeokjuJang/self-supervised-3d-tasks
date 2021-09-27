@@ -108,3 +108,9 @@ transfer_segmentation/.travis.yml
 
 # mri data
 dataset/
+mri_npy/
+mri_cube_npy/
+cpc_mri_data/
+jigsaw_mri_data/
+test_data/
+workspace/

@@ -63,3 +63,39 @@ class PatchDataGeneratorUnlabeled3D(DataGeneratorBase):
         data_y = np.stack(data_y)
 
         return data_x, data_y
+
+class DataGeneratorUnlabeled3DMRI(DataGeneratorBase):
+
+    def __init__(self, data_path, file_list, batch_size=32, shuffle=True, pre_proc_func=None):
+        self.path_to_data = data_path
+
+        super().__init__(file_list, batch_size, shuffle, pre_proc_func)
+
+    def data_generation(self, list_files_temp):
+        data_x = []
+        data_y = []
+
+        for file_name in list_files_temp:
+            path_to_image = os.path.join(self.path_to_data, file_name)
+            
+            if os.path.isfile(path_to_image):
+                img = np.load(path_to_image)
+                img = (img - img.min()) / (img.max() - img.min())
+
+                data_x.append(img)
+                data_y.append(0)  # just to keep the dims right
+            else:
+                l = os.listdir(path_to_image)
+                for f in l:
+                    path_to_image = os.path.join(path_to_image, f)
+                    if os.path.isfile(path_to_image):
+                        img = np.load(path_to_image)
+                        img = (img - img.min()) / (img.max() - img.min())
+
+                        data_x.append(np.expand_dims(img, axis=3))
+                        data_y.append(0)  # just to keep the dims right
+
+        data_x = np.stack(data_x)
+        data_y = np.stack(data_y)
+
+        return data_x, data_y
