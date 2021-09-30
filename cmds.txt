@@ -11,3 +11,6 @@ python train.py self_supervised_3d_tasks/configs/train/rpl_3d.json
 
 
 python finetune.py self_supervised_3d_tasks/configs/finetune/{algorithm}_{dimension}.json
+
+1. cpc
+python finetune.py self_supervised_3d_tasks/configs/finetune/cpc_3d.json
