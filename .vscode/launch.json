@@ -1,0 +1,16 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+    "name": "finetune_cpc_3d",
+    "type": "python",
+    "request": "launch",
+    "program": "${workspaceFolder}/self_supervised_3d_tasks/finetune.py",
+    "console": "integratedTerminal",
+    "args": ["self_supervised_3d_tasks/configs/finetune/cpc_3d.json"]
+  }]
+}

@@ -1,6 +1,6 @@
 name: ss3d
 dependencies:
-    - tensorflow-gpu=2.1.0
+    - tensorflow-gpu=2.2.0
     - absl-py
     - h5py
     - hdf5
@@ -9,7 +9,7 @@ dependencies:
     - scikit-image
     - scikit-learn
     - scipy
-    - tensorboard=2.1.0
+    - tensorboard
     - requests
     - cudatoolkit
     - cudnn

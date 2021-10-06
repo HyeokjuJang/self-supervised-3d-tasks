@@ -1,7 +1,7 @@
 from self_supervised_3d_tasks.data.kaggle_retina_data import get_kaggle_generator, get_kaggle_cross_validation
 from self_supervised_3d_tasks.data.make_data_generator import get_data_generators
 from self_supervised_3d_tasks.data.numpy_2d_loader import Numpy2DLoader
-from self_supervised_3d_tasks.data.segmentation_task_loader import SegmentationGenerator3D, PatchSegmentationGenerator3D
+from self_supervised_3d_tasks.data.segmentation_task_loader import SegmentationGenerator3D, PatchSegmentationGenerator3D, ClassificationGenerator3D
 import numpy as np
 
 
@@ -156,6 +156,10 @@ def get_dataset_train(dataset_name, batch_size, f_train, f_val, train_split, kwa
         return get_dataset_regular_train(
             batch_size, f_train, f_val, train_split, data_generator=Numpy2DLoader, **kwargs,
         )
+    elif dataset_name == "mri_data":
+        return get_dataset_regular_train(
+            batch_size, f_train, f_val, train_split, data_generator=ClassificationGenerator3D, **kwargs,
+        )
     else:
         raise ValueError("not implemented")
 
@@ -174,6 +178,10 @@ def get_dataset_test(dataset_name, batch_size, f_test, kwargs):
     elif dataset_name == "pancreas2d":
         gen_test = get_dataset_regular_test(
             batch_size, f_test, data_generator=Numpy2DLoader, **kwargs,
+        )
+    elif dataset_name == "mri_data":
+        gen_test = get_dataset_regular_test(
+            batch_size, f_test, data_generator=ClassificationGenerator3D, **kwargs,
         )
     else:
         raise ValueError("not implemented")

@@ -80,12 +80,13 @@ def make_custom_metrics(metrics):
         def dice_class_1(y_true, y_pred):
             return weighted_dice_coefficient_per_class(y_true, y_pred, class_to_predict=1)
 
-        def dice_class_2(y_true, y_pred):
-            return weighted_dice_coefficient_per_class(y_true, y_pred, class_to_predict=2)
+        # because we have only 2 classes
+        # def dice_class_2(y_true, y_pred):
+        #     return weighted_dice_coefficient_per_class(y_true, y_pred, class_to_predict=2)
 
         metrics.append(dice_class_0)
         metrics.append(dice_class_1)
-        metrics.append(dice_class_2)
+        # metrics.append(dice_class_2)
 
     return metrics
 
@@ -133,7 +134,6 @@ def run_single_test(algorithm_def, gen_train, gen_val, load_weights, freeze_weig
 
     pred_model = apply_prediction_model(input_shape=enc_model.outputs[0].shape[1:], algorithm_instance=algorithm_def,
                                         **kwargs)
-
     outputs = pred_model(enc_model.outputs)
     model = Model(inputs=enc_model.inputs[0], outputs=outputs)
     print_flat_summary(model)
@@ -146,7 +146,8 @@ def run_single_test(algorithm_def, gen_train, gen_val, load_weights, freeze_weig
             logging_csv = True
             logging_path.parent.mkdir(exist_ok=True, parents=True)
             logger_normal = CSVLogger(str(logging_path), append=False)
-            logger_after_warmup = LogCSVWithStart(str(logging_path), start_from_epoch=epochs_warmup, append=True)
+            logger_after_warmup = LogCSVWithStart(
+                str(logging_path), start_from_epoch=epochs_warmup, append=True)
         if freeze_weights or load_weights:
             enc_model.trainable = False
 
@@ -166,7 +167,8 @@ def run_single_test(algorithm_def, gen_train, gen_val, load_weights, freeze_weig
             if logging_csv:
                 w_callbacks.append(logger_normal)
 
-            model.compile(optimizer=get_optimizer(clipnorm, clipvalue, lr), loss=loss, metrics=metrics)
+            model.compile(optimizer=get_optimizer(
+                clipnorm, clipvalue, lr), loss=loss, metrics=metrics)
             model.fit(
                 x=gen_train,
                 validation_data=gen_val,
@@ -196,12 +198,14 @@ def run_single_test(algorithm_def, gen_train, gen_val, load_weights, freeze_weig
             callbacks.append(mc_c_epochs)
 
         # recompile model
-        model.compile(optimizer=get_optimizer(clipnorm, clipvalue, lr), loss=loss, metrics=metrics)
+        model.compile(optimizer=get_optimizer(
+            clipnorm, clipvalue, lr), loss=loss, metrics=metrics)
         model.fit(
             x=gen_train, validation_data=gen_val, epochs=epochs, callbacks=callbacks
         )
 
-    model.compile(optimizer=get_optimizer(clipnorm, clipvalue, lr), loss=loss, metrics=metrics)
+    model.compile(optimizer=get_optimizer(
+        clipnorm, clipvalue, lr), loss=loss, metrics=metrics)
     y_pred = model.predict(x_test, batch_size=batch_size)
     scores_f = make_scores(y_test, y_pred, scores)
 
@@ -273,7 +277,8 @@ def run_complex_test(
 ):
     model_checkpoint = expanduser(model_checkpoint)
     if os.path.isdir(model_checkpoint):
-        weight_files = list(Path(model_checkpoint).glob("weights-improvement*.hdf5"))
+        weight_files = list(Path(model_checkpoint).glob(
+            "weights-improvement*.hdf5"))
 
         if epochs_initialized > 0 or epochs_frozen > 0:
             assert len(weight_files) > 0, "empty directory!"
@@ -315,9 +320,11 @@ def run_complex_test(
     write_result(working_dir, header)
 
     if do_cross_val:
-        data_loader = CvDataKaggle(dataset_name, batch_size, algorithm_def, n_repetitions=repetitions, **kwargs)
+        data_loader = CvDataKaggle(
+            dataset_name, batch_size, algorithm_def, n_repetitions=repetitions, **kwargs)
     else:
-        data_loader = StandardDataLoader(dataset_name, batch_size, algorithm_def, **kwargs)
+        data_loader = StandardDataLoader(
+            dataset_name, batch_size, algorithm_def, **kwargs)
 
     for train_split in exp_splits:
         percentage = 0.01 * train_split
@@ -337,10 +344,12 @@ def run_complex_test(
             np.random.seed(i)
             random.seed(i)
 
-            gen_train, gen_val, x_test, y_test = data_loader.get_dataset(i, percentage)
+            gen_train, gen_val, x_test, y_test = data_loader.get_dataset(
+                i, percentage)
 
             if epochs_frozen > 0:
-                logging_a_path = logging_base_path / f"split{train_split}frozen_rep{i}.log"
+                logging_a_path = logging_base_path / \
+                    f"split{train_split}frozen_rep{i}.log"
                 a = try_until_no_nan(
                     lambda: run_single_test(algorithm_def, gen_train, gen_val, True, True, x_test, y_test, lr,
                                             batch_size, epochs_frozen, epochs_warmup, model_checkpoint, scores, loss,
@@ -349,7 +358,8 @@ def run_complex_test(
                                             kwargs, clipnorm=clipnorm, clipvalue=clipvalue))  # frozen
                 a_s.append(a)
             if epochs_initialized > 0:
-                logging_b_path = logging_base_path / f"split{train_split}initialized_rep{i}.log"
+                logging_b_path = logging_base_path / \
+                    f"split{train_split}initialized_rep{i}.log"
                 b = try_until_no_nan(
                     lambda: run_single_test(algorithm_def, gen_train, gen_val, True, False, x_test, y_test, lr,
                                             batch_size, epochs_initialized, epochs_warmup, model_checkpoint, scores,
@@ -357,7 +367,8 @@ def run_complex_test(
                                             logging_b_path, kwargs, clipnorm=clipnorm, clipvalue=clipvalue))
                 b_s.append(b)
             if epochs_random > 0:
-                logging_c_path = logging_base_path / f"split{train_split}random_rep{i}.log"
+                logging_c_path = logging_base_path / \
+                    f"split{train_split}random_rep{i}.log"
                 c = try_until_no_nan(
                     lambda: run_single_test(algorithm_def, gen_train, gen_val, False, False, x_test, y_test, lr,
                                             batch_size, epochs_random, epochs_warmup, model_checkpoint, scores, loss,

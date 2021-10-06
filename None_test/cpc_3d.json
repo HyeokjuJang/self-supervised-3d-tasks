@@ -2,11 +2,11 @@
     "algorithm": "cpc",
     "data_dir_train": "mri_cube_npy/",
     "data_dir_test": "test_data/",
-    "model_checkpoint": "workspace/cpc_mri_data/weights-improvement-946.hdf5",
+    "model_checkpoint": "None",
     "dataset_name": "mri_data",
     "train_data_generator_args": { "label_stem": "", "shuffle": true },
-    "val_data_generator_args": { "label_stem": "", "shuffle": true },
-    "test_data_generator_args": { "label_stem": "", "shuffle": true },
+    "val_data_generator_args": { "label_stem": "" },
+    "test_data_generator_args": { "label_stem": "" },
 
     "data_is_3D": true,
     "val_split": 0.05,
@@ -21,7 +21,7 @@
     "metrics": ["accuracy", "weighted_dice_coefficient", "weighted_dice_coefficient_per_class_pancreas"],
 
     "top_architecture": "big_fully",
-    "prediction_architecture": "simple_binaryclass",
+    "prediction_architecture": "unet_3d_upconv",
     "pooling": "max",
     "number_channels": 1,
     "batch_size": 2,
@@ -35,7 +35,5 @@
     "repetitions": 3,
 
     "clipnorm": 1,
-    "clipvalue": 1,
-
-    "num_classes": 2
+    "clipvalue": 1
 }

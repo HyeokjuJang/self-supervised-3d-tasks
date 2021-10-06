@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 from sklearn.metrics import cohen_kappa_score, accuracy_score, jaccard_score
 from tensorflow.keras import backend as K
-from tensorflow_core.python.keras.metrics import BinaryAccuracy
+from tensorflow.keras.metrics import BinaryAccuracy
 
 
 def triplet_loss(y_true, y_pred, _alpha=1.0):
@@ -38,21 +38,25 @@ def weighted_categorical_crossentropy(weights=(1, 5, 10)):
 
 
 def jaccard_distance(y_true, y_pred, smooth=0.00001):
-    intersection = K.sum(K.abs(y_true * y_pred), axis=tuple(range(y_pred.shape.rank - 1)))
-    sum_ = K.sum(K.abs(y_true) + K.abs(y_pred), axis=tuple(range(y_pred.shape.rank - 1)))
+    intersection = K.sum(K.abs(y_true * y_pred),
+                         axis=tuple(range(y_pred.shape.rank - 1)))
+    sum_ = K.sum(K.abs(y_true) + K.abs(y_pred),
+                 axis=tuple(range(y_pred.shape.rank - 1)))
 
-    jac = (intersection + smooth) / (sum_ - intersection + smooth + K.epsilon())
+    jac = (intersection + smooth) / \
+        (sum_ - intersection + smooth + K.epsilon())
     jd = K.mean(jac)
 
     return (1 - jd) * smooth
+
 
 def weighted_dice_coefficient_per_class(y_true, y_pred, class_to_predict=0, smooth=0.00001):
     axis = tuple(range(y_pred.shape.rank - 1))
 
     return (2. * (K.sum(y_true * y_pred,
-                              axis=axis) + smooth / 2) / (K.sum(y_true,
-                                                                axis=axis) + K.sum(y_pred,
-                                                                                   axis=axis) + smooth))[class_to_predict]
+                        axis=axis) + smooth / 2) / (K.sum(y_true,
+                                                          axis=axis) + K.sum(y_pred,
+                                                                             axis=axis) + smooth))[class_to_predict]
 
 
 def weighted_dice_coefficient(y_true, y_pred, smooth=0.00001):
@@ -79,6 +83,7 @@ def weighted_sum_loss(alpha=0.5, beta=0.5, weights=(1, 5, 10)):
         return gdl + wce
 
     return loss
+
 
 def transform_multilabel_to_continuous(y, threshold):
     assert isinstance(y, np.ndarray), "invalid y"
@@ -133,6 +138,7 @@ def score_dice(y, y_pred):
 
     return np.average(np.array([(2 * x) / (1 + x) for x in j]))
 
+
 def score_dice_class(y, y_pred, class_to_predict):
     y = np.argmax(y, axis=-1).flatten()
     y_pred = np.argmax(y_pred, axis=-1).flatten()
@@ -140,6 +146,7 @@ def score_dice_class(y, y_pred, class_to_predict):
     j = jaccard_score(y, y_pred, average=None)
 
     return np.array([(2 * x) / (1 + x) for x in j])[class_to_predict]
+
 
 def brats_et(y, y_pred):
     y = np.argmax(y, axis=-1).flatten()
@@ -198,11 +205,15 @@ def brats_wt_metric(y_true, y_pred):
     y_true = tf.argmax(y_true, axis=-1)
     y_pred = tf.argmax(y_pred, axis=-1)
     gt_wt = tf.cast(tf.identity(y_true), tf.int32)
-    gt_wt = tf.where(tf.equal(2, gt_wt), 1 * tf.ones_like(gt_wt), gt_wt)  # ground_truth_wt[ground_truth_wt == 2] = 1
-    gt_wt = tf.where(tf.equal(3, gt_wt), 1 * tf.ones_like(gt_wt), gt_wt)  # ground_truth_wt[ground_truth_wt == 3] = 1
+    # ground_truth_wt[ground_truth_wt == 2] = 1
+    gt_wt = tf.where(tf.equal(2, gt_wt), 1 * tf.ones_like(gt_wt), gt_wt)
+    # ground_truth_wt[ground_truth_wt == 3] = 1
+    gt_wt = tf.where(tf.equal(3, gt_wt), 1 * tf.ones_like(gt_wt), gt_wt)
     pd_wt = tf.cast(tf.round(tf.identity(y_pred)), tf.int32)
-    pd_wt = tf.where(tf.equal(2, pd_wt), 1 * tf.ones_like(pd_wt), pd_wt)  # predictions_wt[predictions_wt == 2] = 1
-    pd_wt = tf.where(tf.equal(3, pd_wt), 1 * tf.ones_like(pd_wt), pd_wt)  # predictions_wt[predictions_wt == 3] = 1
+    # predictions_wt[predictions_wt == 2] = 1
+    pd_wt = tf.where(tf.equal(2, pd_wt), 1 * tf.ones_like(pd_wt), pd_wt)
+    # predictions_wt[predictions_wt == 3] = 1
+    pd_wt = tf.where(tf.equal(3, pd_wt), 1 * tf.ones_like(pd_wt), pd_wt)
     return _dice_hard_coe(gt_wt, pd_wt)
 
 
@@ -211,11 +222,15 @@ def brats_tc_metric(y_true, y_pred):
     y_true = tf.argmax(y_true, axis=-1)
     y_pred = tf.argmax(y_pred, axis=-1)
     gt_tc = tf.cast(tf.identity(y_true), tf.int32)
-    gt_tc = tf.where(tf.equal(2, gt_tc), 0 * tf.ones_like(gt_tc), gt_tc)  # ground_truth_tc[ground_truth_tc == 2] = 0
-    gt_tc = tf.where(tf.equal(3, gt_tc), 1 * tf.ones_like(gt_tc), gt_tc)  # ground_truth_tc[ground_truth_tc == 3] = 1
+    # ground_truth_tc[ground_truth_tc == 2] = 0
+    gt_tc = tf.where(tf.equal(2, gt_tc), 0 * tf.ones_like(gt_tc), gt_tc)
+    # ground_truth_tc[ground_truth_tc == 3] = 1
+    gt_tc = tf.where(tf.equal(3, gt_tc), 1 * tf.ones_like(gt_tc), gt_tc)
     pd_tc = tf.cast(tf.round(tf.identity(y_pred)), tf.int32)
-    pd_tc = tf.where(tf.equal(2, pd_tc), 0 * tf.ones_like(pd_tc), pd_tc)  # predictions_tc[predictions_tc == 2] = 0
-    pd_tc = tf.where(tf.equal(3, pd_tc), 1 * tf.ones_like(pd_tc), pd_tc)  # predictions_tc[predictions_tc == 3] = 1
+    # predictions_tc[predictions_tc == 2] = 0
+    pd_tc = tf.where(tf.equal(2, pd_tc), 0 * tf.ones_like(pd_tc), pd_tc)
+    # predictions_tc[predictions_tc == 3] = 1
+    pd_tc = tf.where(tf.equal(3, pd_tc), 1 * tf.ones_like(pd_tc), pd_tc)
     return _dice_hard_coe(gt_tc, pd_tc)
 
 
@@ -224,11 +239,17 @@ def brats_et_metric(y_true, y_pred):
     y_true = tf.argmax(y_true, axis=-1)
     y_pred = tf.argmax(y_pred, axis=-1)
     gt_et = tf.cast(tf.identity(y_true), tf.int32)
-    gt_et = tf.where(tf.equal(1, gt_et), 0 * tf.ones_like(gt_et), gt_et)  # ground_truth_et[ground_truth_et == 1] = 0
-    gt_et = tf.where(tf.equal(2, gt_et), 0 * tf.ones_like(gt_et), gt_et)  # ground_truth_et[ground_truth_et == 2] = 0
-    gt_et = tf.where(tf.equal(3, gt_et), 1 * tf.ones_like(gt_et), gt_et)  # ground_truth_et[ground_truth_et == 3] = 1
+    # ground_truth_et[ground_truth_et == 1] = 0
+    gt_et = tf.where(tf.equal(1, gt_et), 0 * tf.ones_like(gt_et), gt_et)
+    # ground_truth_et[ground_truth_et == 2] = 0
+    gt_et = tf.where(tf.equal(2, gt_et), 0 * tf.ones_like(gt_et), gt_et)
+    # ground_truth_et[ground_truth_et == 3] = 1
+    gt_et = tf.where(tf.equal(3, gt_et), 1 * tf.ones_like(gt_et), gt_et)
     pd_et = tf.cast(tf.round(tf.identity(y_pred)), tf.int32)
-    pd_et = tf.where(tf.equal(1, pd_et), 0 * tf.ones_like(pd_et), pd_et)  # predictions_et[predictions_et == 1] = 0
-    pd_et = tf.where(tf.equal(2, pd_et), 0 * tf.ones_like(pd_et), pd_et)  # predictions_et[predictions_et == 2] = 0
-    pd_et = tf.where(tf.equal(3, pd_et), 1 * tf.ones_like(pd_et), pd_et)  # predictions_et[predictions_et == 3] = 1
+    # predictions_et[predictions_et == 1] = 0
+    pd_et = tf.where(tf.equal(1, pd_et), 0 * tf.ones_like(pd_et), pd_et)
+    # predictions_et[predictions_et == 2] = 0
+    pd_et = tf.where(tf.equal(2, pd_et), 0 * tf.ones_like(pd_et), pd_et)
+    # predictions_et[predictions_et == 3] = 1
+    pd_et = tf.where(tf.equal(3, pd_et), 1 * tf.ones_like(pd_et), pd_et)
     return _dice_hard_coe(gt_et, pd_et)

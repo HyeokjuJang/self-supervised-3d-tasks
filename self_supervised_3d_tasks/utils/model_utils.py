@@ -1,29 +1,27 @@
+from self_supervised_3d_tasks.models.unet3d import downconv_model_3d, upconv_model_3d
+from self_supervised_3d_tasks.models.unet import downconv_model, upconv_model
+from self_supervised_3d_tasks.models.fully_connected import fully_connected_big, simple_multiclass, simple_binaryclass
+from tensorflow.python.keras.layers import Lambda, Concatenate, TimeDistributed, UpSampling3D
+from tensorflow.python.keras import Sequential
+from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.applications import ResNet50, ResNet50V2, ResNet101, ResNet101V2
+from tensorflow.keras.applications import InceptionV3, InceptionResNetV2, ResNet152, DenseNet121
+from tensorflow.keras import Model, Input
+from tensorflow.keras.layers import Reshape
+from tensorflow.keras.layers import Wrapper, UpSampling2D
+from tensorflow.python.keras.layers.pooling import Pooling3D, Pooling2D
+import tensorflow as tf
+import numpy as np
+from pathlib import Path
+import sys
+import struct
+import shutil
+import json
 import os
 
 from self_supervised_3d_tasks.utils.free_gpu_check import aquire_free_gpus
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
-import json
-import shutil
-import struct
-import sys
-from pathlib import Path
-import numpy as np
-import tensorflow as tf
-
-from tensorflow.python.keras.layers.pooling import Pooling3D, Pooling2D
-from tensorflow_core.python.keras.layers import Wrapper, UpSampling2D
-from tensorflow.keras.layers import Reshape
-from tensorflow.keras import Model, Input
-from tensorflow.keras.applications import InceptionV3, InceptionResNetV2, ResNet152, DenseNet121
-from tensorflow.keras.applications import ResNet50, ResNet50V2, ResNet101, ResNet101V2
-from tensorflow.keras.layers import Dense, Flatten
-from tensorflow.python.keras import Sequential
-from tensorflow.python.keras.layers import Lambda, Concatenate, TimeDistributed, UpSampling3D
-from self_supervised_3d_tasks.models.fully_connected import fully_connected_big, simple_multiclass
-from self_supervised_3d_tasks.models.unet import downconv_model, upconv_model
-from self_supervised_3d_tasks.models.unet3d import downconv_model_3d, upconv_model_3d
 
 
 def print_flat_summary(model, long=True, printed_models=[]):
@@ -70,11 +68,13 @@ def init(f, name="training", n_gpus=1):
 def get_prediction_model(name, in_shape, include_top, algorithm_instance, num_classes, kwargs):
     if name == "big_fully":
         input_l = Input(in_shape)
-        output_l = fully_connected_big(input_l, include_top=include_top, **kwargs)
+        output_l = fully_connected_big(
+            input_l, include_top=include_top, **kwargs)
         model = Model(input_l, output_l)
     elif name == "simple_multiclass":
         input_l = Input(in_shape)
-        output_l = simple_multiclass(input_l, include_top=include_top, **kwargs)
+        output_l = simple_multiclass(
+            input_l, include_top=include_top, **kwargs)
         model = Model(input_l, output_l)
     elif name == "unet_2d_upconv":
         assert algorithm_instance is not None, "no algorithm instance for 2d skip connections found"
@@ -88,7 +88,8 @@ def get_prediction_model(name, in_shape, include_top, algorithm_instance, num_cl
         else:
             x = first_input
 
-        inputs_skip = [Input(x.shape[1:]) for x in reversed(algorithm_instance.layer_data[0])]
+        inputs_skip = [Input(x.shape[1:])
+                       for x in reversed(algorithm_instance.layer_data[0])]
         inputs_up = [x] + inputs_skip
 
         model_up_out = upconv_model(x.shape[1:], down_layers=algorithm_instance.layer_data[0],
@@ -107,7 +108,8 @@ def get_prediction_model(name, in_shape, include_top, algorithm_instance, num_cl
         else:
             x = first_input
 
-        inputs_skip = [Input(x.shape[1:]) for x in reversed(algorithm_instance.layer_data[0])]
+        inputs_skip = [Input(x.shape[1:])
+                       for x in reversed(algorithm_instance.layer_data[0])]
         inputs_up = [x] + inputs_skip
 
         model_up_out = upconv_model_3d(x.shape[1:], down_layers=algorithm_instance.layer_data[0],
@@ -125,8 +127,10 @@ def get_prediction_model(name, in_shape, include_top, algorithm_instance, num_cl
         # combine all predictions from encoders to one layer and split up again
         first_input = Input(in_shape)
         flat = Flatten()(first_input)
-        processed_first_input = Dense(n_patches * embed_dim, activation="relu")(flat)
-        processed_first_input = Reshape((n_patches, embed_dim))(processed_first_input)
+        processed_first_input = Dense(
+            n_patches * embed_dim, activation="relu")(flat)
+        processed_first_input = Reshape(
+            (n_patches, embed_dim))(processed_first_input)
 
         # get the first shape of the upconv from the encoder
         # get whether the last layer is a pooling layer
@@ -143,7 +147,8 @@ def get_prediction_model(name, in_shape, include_top, algorithm_instance, num_cl
             model_first_up.add(UpSampling3D((2, 2, 2)))
 
         # apply selection to get input for decoder models
-        processed_first_input = TimeDistributed(model_first_up)(processed_first_input)
+        processed_first_input = TimeDistributed(
+            model_first_up)(processed_first_input)
 
         # prepare decoder
         model_up = upconv_model_3d(processed_first_input.shape[2:], down_layers=algorithm_instance.layer_data[0],
@@ -156,20 +161,30 @@ def get_prediction_model(name, in_shape, include_top, algorithm_instance, num_cl
             large_inputs.append(Input(n_patches + s.shape[1:]))
 
         for p in range(n_patches):
-            y = [Lambda(lambda x: x[:, p, :, :, :, :], output_shape=processed_first_input.shape[2:])]
+            y = [Lambda(lambda x: x[:, p, :, :, :, :],
+                        output_shape=processed_first_input.shape[2:])]
             for s in reversed(algorithm_instance.layer_data[0]):
-                y.append(Lambda(lambda x: x[:, p, :, :, :, :], output_shape=s.shape[1:]))
+                y.append(
+                    Lambda(lambda x: x[:, p, :, :, :, :], output_shape=s.shape[1:]))
 
-            small_inputs = [y[0](processed_first_input)]  # the first input has to be processed
+            # the first input has to be processed
+            small_inputs = [y[0](processed_first_input)]
             for i in range(1, len(large_inputs)):
-                small_inputs.append(y[i](large_inputs[i]))  # we can take the rest as is
+                # we can take the rest as is
+                small_inputs.append(y[i](large_inputs[i]))
 
             pred_patches.append(model_up(small_inputs))
 
         last_out = Concatenate(axis=1)(pred_patches)
-        last_out = Reshape((n_patches,) + model_up.layers[-1].output_shape[1:])(last_out)
+        last_out = Reshape(
+            (n_patches,) + model_up.layers[-1].output_shape[1:])(last_out)
 
         model = Model(inputs=large_inputs, outputs=[last_out])
+    elif name == "simple_binaryclass":
+        input_l = Input(in_shape)
+        output_l = simple_binaryclass(
+            input_l, num_classes, include_top=include_top, **kwargs)
+        model = Model(input_l, output_l)
     elif name == "none":
         return None
     else:
@@ -289,7 +304,8 @@ def apply_encoder_model_3d(
         pooling = None
 
     if encoder_architecture is not None:
-        model, layer_data = get_encoder_model_3d(encoder_architecture, input_shape)
+        model, layer_data = get_encoder_model_3d(
+            encoder_architecture, input_shape)
     else:
         model, layer_data = downconv_model_3d(
             input_shape, num_layers=num_layers, pooling=pooling, filters=enc_filters, **model_params
@@ -325,7 +341,8 @@ def apply_encoder_model(
 
 def load_permutations_3d(
         permutation_path=str(
-            Path(__file__).parent.parent / "permutations" / "permutations3d_100_27.npy"
+            Path(__file__).parent.parent / "permutations" /
+            "permutations3d_100_27.npy"
         ),
 ):
     with open(permutation_path, "rb") as f:
@@ -336,7 +353,8 @@ def load_permutations_3d(
 
 def load_permutations(
         permutation_path=str(
-            Path(__file__).parent.parent / "permutations" / "permutations_100_max.bin"
+            Path(__file__).parent.parent /
+            "permutations" / "permutations_100_max.bin"
         ),
 ):
     """Loads a set of pre-defined permutations."""

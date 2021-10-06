@@ -1,4 +1,4 @@
-from tensorflow.keras.layers import BatchNormalization, Dropout, Dense
+from tensorflow.keras.layers import BatchNormalization, Dropout, Dense, Flatten
 from tensorflow.python.keras.layers import GlobalAveragePooling2D
 
 
@@ -28,6 +28,18 @@ def simple_multiclass(inputs, dropout_rate=0.5, include_top=True, **kwargs):
 
     if include_top:
         net = Dense(5, activation='sigmoid')(net)
+
+    return net
+
+
+def simple_binaryclass(inputs, num_classes, dropout_rate=0.5, include_top=True, **kwargs):
+    net = Flatten()(inputs)
+    net = Dense(1024, activation="relu")(net)
+    net = BatchNormalization()(net)
+    net = Dropout(rate=dropout_rate)(net)
+
+    if include_top:
+        net = Dense(num_classes, activation='sigmoid')(net)
 
     return net
 
