@@ -80,12 +80,12 @@ def make_custom_metrics(metrics):
         def dice_class_1(y_true, y_pred):
             return weighted_dice_coefficient_per_class(y_true, y_pred, class_to_predict=1)
 
-        # because we have only 2 classes
-        # def dice_class_2(y_true, y_pred):
-        #     return weighted_dice_coefficient_per_class(y_true, y_pred, class_to_predict=2)
+        def dice_class_2(y_true, y_pred):
+            return weighted_dice_coefficient_per_class(y_true, y_pred, class_to_predict=2)
 
         metrics.append(dice_class_0)
         metrics.append(dice_class_1)
+        # because we have only 2 classes
         # metrics.append(dice_class_2)
 
     return metrics

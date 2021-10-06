@@ -4,7 +4,6 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
     {
     "name": "finetune_cpc_3d",
     "type": "python",
@@ -12,5 +11,59 @@
     "program": "${workspaceFolder}/self_supervised_3d_tasks/finetune.py",
     "console": "integratedTerminal",
     "args": ["self_supervised_3d_tasks/configs/finetune/cpc_3d.json"]
-  }]
+  },
+  {
+    "name": "finetune_jigsaw_3d",
+    "type": "python",
+    "request": "launch",
+    "program": "${workspaceFolder}/self_supervised_3d_tasks/finetune.py",
+    "console": "integratedTerminal",
+    "args": ["self_supervised_3d_tasks/configs/finetune/jigsaw_3d.json"]
+  },
+  {
+    "name": "finetune_rotation_3d",
+    "type": "python",
+    "request": "launch",
+    "program": "${workspaceFolder}/self_supervised_3d_tasks/finetune.py",
+    "console": "integratedTerminal",
+    "args": ["self_supervised_3d_tasks/configs/finetune/rotation_3d.json"]
+  },
+  {
+    "name": "finetune_rpl_3d",
+    "type": "python",
+    "request": "launch",
+    "program": "${workspaceFolder}/self_supervised_3d_tasks/finetune.py",
+    "console": "integratedTerminal",
+    "args": ["self_supervised_3d_tasks/configs/finetune/rpl_3d.json"]
+  },
+  {
+    "name": "train_cpc_3d",
+    "type": "python",
+    "request": "launch",
+    "program": "${workspaceFolder}/self_supervised_3d_tasks/train.py",
+    "console": "integratedTerminal",
+    "args": ["self_supervised_3d_tasks/configs/train/cpc_3d.json"]
+  },{
+    "name": "train_jigsaw_3d",
+    "type": "python",
+    "request": "launch",
+    "program": "${workspaceFolder}/self_supervised_3d_tasks/train.py",
+    "console": "integratedTerminal",
+    "args": ["self_supervised_3d_tasks/configs/train/jigsaw_3d.json"]
+  },{
+    "name": "train_rotation_3d",
+    "type": "python",
+    "request": "launch",
+    "program": "${workspaceFolder}/self_supervised_3d_tasks/train.py",
+    "console": "integratedTerminal",
+    "args": ["self_supervised_3d_tasks/configs/train/rotation_3d.json"]
+  },{
+    "name": "train_rpl_3d",
+    "type": "python",
+    "request": "launch",
+    "program": "${workspaceFolder}/self_supervised_3d_tasks/train.py",
+    "console": "integratedTerminal",
+    "args": ["self_supervised_3d_tasks/configs/train/rpl_3d.json"]
+  },
+  ]
 }

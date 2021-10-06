@@ -14,3 +14,9 @@ python finetune.py self_supervised_3d_tasks/configs/finetune/{algorithm}_{dimens
 
 1. cpc
 python finetune.py self_supervised_3d_tasks/configs/finetune/cpc_3d.json
+2. jigsaw
+python finetune.py self_supervised_3d_tasks/configs/finetune/jigsaw_3d.json
+3. rotation
+python finetune.py self_supervised_3d_tasks/configs/finetune/rotation_3d.json
+4. rpl
+python train.py self_supervised_3d_tasks/configs/finetune/rpl_3d.json
