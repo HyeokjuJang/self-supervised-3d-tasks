@@ -28,6 +28,13 @@ from self_supervised_3d_tasks.utils.model_utils import (
     print_flat_summary)
 from self_supervised_3d_tasks.utils.model_utils import init
 
+# Try to avoid tensorflow get all vram
+physical_devices = tf.config.list_physical_devices('GPU')
+try:
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+except:
+    # Invalid device or cannot modify virtual devices once initialized.
+    pass
 
 def get_score(score_name):
     if score_name == "qw_kappa":

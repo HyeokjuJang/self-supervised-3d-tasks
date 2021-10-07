@@ -3,12 +3,21 @@ from self_supervised_3d_tasks.utils.model_utils import init, print_flat_summary
 from pathlib import Path
 
 import tensorflow.keras as keras
+import tensorflow as tf
 from self_supervised_3d_tasks.data.numpy_3d_loader import DataGeneratorUnlabeled3D, PatchDataGeneratorUnlabeled3D, DataGeneratorUnlabeled3DMRI
 
 from self_supervised_3d_tasks.data.make_data_generator import get_data_generators
 from self_supervised_3d_tasks.data.image_2d_loader import DataGeneratorUnlabeled2D
 from self_supervised_3d_tasks.algorithms import cpc, jigsaw, relative_patch_location, rotation, exemplar
 from self_supervised_3d_tasks.utils.model_utils import get_writing_path
+
+# Try to avoid tensorflow get all vram
+physical_devices = tf.config.list_physical_devices('GPU')
+try:
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+except:
+    # Invalid device or cannot modify virtual devices once initialized.
+    pass
 
 keras_algorithm_list = {
     "cpc": cpc,
