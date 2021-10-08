@@ -2,7 +2,7 @@
   "algorithm": "jigsaw",
   "data_dir_train": "mri_cube_npy/",
   "data_dir_test": "test_data/",
-  "model_checkpoint": "workspace/jigsaw_mri_data/weights-improvement-613.hdf5",
+  "model_checkpoint": "pretrained_model/jigsaw_pretrained.hdf5",
   "dataset_name": "mri_data",
 
   "train_data_generator_args": { "label_stem": "", "shuffle": true},

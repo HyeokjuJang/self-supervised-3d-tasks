@@ -2,7 +2,7 @@
   "algorithm": "rotation",
   "data_dir_train": "mri_cube_npy/",
   "data_dir_test": "test_data/",
-  "model_checkpoint": "workspace/rotation_mri_data/weights-improvement-256.hdf5",
+  "model_checkpoint": "pretrained_model/rotation_pretrained.hdf5",
   "dataset_name": "mri_data",
   "train_data_generator_args": {"label_stem": "", "shuffle": true},
   "val_data_generator_args": {"label_stem": "", "shuffle": true },

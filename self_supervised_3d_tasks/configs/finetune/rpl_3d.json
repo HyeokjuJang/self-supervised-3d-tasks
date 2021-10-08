@@ -2,7 +2,7 @@
   "algorithm": "rpl",
   "data_dir_train": "mri_cube_npy/",
   "data_dir_test": "test_data/",
-  "model_checkpoint": "workspace/rpl_mri_data/weights-improvement-484.hdf5",
+  "model_checkpoint": "pretrined_model/rpl_pretrained.hdf5",
   "dataset_name": "mri_data",
   "train_data_generator_args": { "label_stem": "", "shuffle": true},
   "val_data_generator_args": {"label_stem": "", "shuffle": true },
