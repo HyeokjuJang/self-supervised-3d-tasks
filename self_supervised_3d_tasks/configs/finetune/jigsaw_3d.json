@@ -17,7 +17,7 @@
   "data_dim": 128,
 
   "loss": "weighted_dice_loss",
-  "scores": ["dice", "jaccard", "dice_pancreas_0", "dice_pancreas_1", "dice_pancreas_2"],
+  "scores": ["dice", "jaccard", "dice_pancreas_0", "dice_pancreas_1"],
   "metrics": ["accuracy", "weighted_dice_coefficient", "weighted_dice_coefficient_per_class_pancreas"],
 
   "top_architecture": "big_fully",
