@@ -34,7 +34,7 @@ data_gen_list = {
     "brats": DataGeneratorUnlabeled3D,
     "ukb2d": DataGeneratorUnlabeled2D,
     "ukb3d": PatchDataGeneratorUnlabeled3D,
-    "mri_data": DataGeneratorUnlabeled3DMRI
+    "mri_gather": DataGeneratorUnlabeled3DMRI,
 }
 
 

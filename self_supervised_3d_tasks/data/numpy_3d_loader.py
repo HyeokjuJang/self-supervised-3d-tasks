@@ -65,7 +65,6 @@ class PatchDataGeneratorUnlabeled3D(DataGeneratorBase):
         return data_x, data_y
 
 class DataGeneratorUnlabeled3DMRI(DataGeneratorBase):
-
     def __init__(self, data_path, file_list, batch_size=32, shuffle=True, pre_proc_func=None):
         self.path_to_data = data_path
 
@@ -81,7 +80,9 @@ class DataGeneratorUnlabeled3DMRI(DataGeneratorBase):
             if os.path.isfile(path_to_image):
                 img = np.load(path_to_image)
                 img = (img - img.min()) / (img.max() - img.min())
-
+                w, h, d, _ = img.shape
+                if not (w == h and h == d):
+                    img = img.transpose((1, 2, 3, 0))
                 data_x.append(img)
                 data_y.append(0)  # just to keep the dims right
             else:

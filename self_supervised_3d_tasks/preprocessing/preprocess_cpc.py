@@ -173,7 +173,7 @@ def preprocess_volume_3d(volume, crop_size, patches_per_side, patch_overlap, is_
 
 def preprocess_3d(batch, crop_size, patches_per_side, is_training=True):
     _, w, h, d, _ = batch.shape
-    assert w == h and h == d, "accepting only cube volumes"
+    assert w == h and h == d, "accepting only cube volumes, input volume shape {}".format(batch.shape)
 
     patch_overlap = 0  # dont use overlap here
     return np.stack([preprocess_volume_3d(volume, crop_size, patches_per_side, patch_overlap, is_training=is_training)

@@ -17,6 +17,49 @@ def get_data_generators_internal(data_path, files, data_generator, train_split=N
         train_split = int(len(files) * train_split)
         val_split = int(len(files) * val_split)
 
+        # Do not leak data on validation set
+        if data_path == "mri_cube_npy/":
+
+            files = sorted(files)
+            cn_startnum = 0
+            for i, f in enumerate(files):
+                if f.startswith("CN"):
+                    cn_startnum = i
+                    break
+
+            files_ad = files[:cn_startnum]
+            files_cn = files[cn_startnum:]
+            
+            train_split_ad = int(len(files_ad) * train_split / len(files))
+            val_split_ad = int(len(files_ad) * val_split / len(files))
+
+            train_split_cn = int(len(files_cn) * train_split / len(files))
+            val_split_cn = int(len(files_cn) * val_split / len(files))
+
+            def get_no_leak_split_num(files_, train_split_, val_split_):
+                while os.path.basename(files_[train_split_ - 1]).split("_")[0] == os.path.basename(files_[train_split_]).split("_")[0]:
+                    train_split_ += 1
+                if len(files_) > train_split_ + val_split_:
+                    while os.path.basename(files_[val_split_ - 1]).split("_")[0] == os.path.basename(files_[val_split_]).split("_")[0]:
+                        val_split_ += 1
+                return train_split_, val_split_
+
+            train_split_ad, val_split_ad = get_no_leak_split_num(files_ad, train_split_ad, val_split_ad)
+            train_split_cn, val_split_cn = get_no_leak_split_num(files_cn, train_split_cn, val_split_cn)
+
+            train_ad = files_ad[0:train_split_ad]
+            val_ad = files_ad[train_split_ad:train_split_ad + val_split_ad]
+            test_ad = files_ad[train_split_ad + val_split_ad:]
+
+            train_cn = files_cn[0:train_split_cn]
+            val_cn = files_cn[train_split_cn:train_split_cn + val_split_cn]
+            test_cn = files_cn[train_split_cn + val_split_cn:]
+
+            files = train_ad + train_cn + val_ad + val_cn + test_ad + test_cn
+
+            train_split = train_split_ad + train_split_cn
+            val_split = val_split_ad + val_split_cn
+
         # Create lists
         train = files[0:train_split]
         val = files[train_split:train_split + val_split]
@@ -138,7 +181,13 @@ def get_data_generators(data_path, data_generator, train_split=None, val_split=N
 
     # List images in directory
     files = os.listdir(data_path)
-
+    if os.path.isdir(os.path.join(data_path,files[0])):
+        dirs = files
+        files = []
+        for dir in dirs:
+            for file in os.listdir(os.path.join(data_path, dir)):
+                files.append(os.path.join(dir, file))
+    
     if shuffle_before_split:
         random.shuffle(files)
 

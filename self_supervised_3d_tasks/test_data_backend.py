@@ -1,7 +1,8 @@
 from self_supervised_3d_tasks.data.kaggle_retina_data import get_kaggle_generator, get_kaggle_cross_validation
 from self_supervised_3d_tasks.data.make_data_generator import get_data_generators
 from self_supervised_3d_tasks.data.numpy_2d_loader import Numpy2DLoader
-from self_supervised_3d_tasks.data.segmentation_task_loader import SegmentationGenerator3D, PatchSegmentationGenerator3D, ClassificationGenerator3D
+from self_supervised_3d_tasks.data.segmentation_task_loader import SegmentationGenerator3D, PatchSegmentationGenerator3D
+from self_supervised_3d_tasks.data.classification_task_loader import ClassificationGenerator3D
 import numpy as np
 
 

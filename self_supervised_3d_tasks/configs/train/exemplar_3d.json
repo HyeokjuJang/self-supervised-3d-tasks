@@ -1,19 +1,19 @@
 {
-  "algorithm": "exemplar",
-  "data_dir": "mri_cube_npy/",
-  "dataset_name": "mri_data",
-  "sample_neg_examples_from": "dataset",
+    "algorithm": "exemplar",
+    "data_dir": "/data2/brain_mri/mri_gather_npy/",
+    "dataset_name": "mri_data",
+    "sample_neg_examples_from": "dataset",
 
-  "data_is_3D": true,
+    "data_is_3D": true,
 
-  "code_size": 1024,
-  "enc_filters": 16,
-  "data_dim": 128,
+    "code_size": 1024,
+    "enc_filters": 16,
+    "data_dim": 128,
 
-  "top_architecture": "big_fully",
-  "number_channels": 1,
-  "batch_size": 2,
+    "top_architecture": "big_fully",
+    "number_channels": 1,
+    "batch_size": 2,
 
-  "lr": 1e-4,
-  "epochs": 1000
+    "lr": 1e-4,
+    "epochs": 1000
 }

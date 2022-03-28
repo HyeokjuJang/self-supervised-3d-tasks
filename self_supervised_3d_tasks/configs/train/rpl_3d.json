@@ -1,19 +1,19 @@
 {
-  "algorithm": "rpl",
-  "data_dir": "mri_cube_npy/",
-  "dataset_name": "mri_data",
+    "algorithm": "rpl",
+    "data_dir": "/data2/brain_mri/mri_gather_npy/",
+    "dataset_name": "mri_data",
 
-  "data_is_3D": true,
+    "data_is_3D": true,
 
-  "enc_filters": 16,
-  "patches_per_side": 3,
-  "patch_jitter": 3,
-  "data_dim": 128,
+    "enc_filters": 16,
+    "patches_per_side": 3,
+    "patch_jitter": 3,
+    "data_dim": 128,
 
-  "top_architecture": "big_fully",
-  "number_channels": 1,
-  "batch_size": 32,
+    "top_architecture": "big_fully",
+    "number_channels": 1,
+    "batch_size": 32,
 
-  "lr": 1e-4,
-  "epochs": 1000
+    "lr": 1e-4,
+    "epochs": 1000
 }
