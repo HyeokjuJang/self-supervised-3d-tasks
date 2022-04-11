@@ -27,7 +27,7 @@ def upsample_simple_3d(filters, kernel_size, strides, padding):
 def conv3d_block(
         inputs,
         use_batch_norm=True,
-        dropout=0.3,
+        dropout=0.0,#0.3,
         filters=16,
         kernel_size=(3, 3, 3),
         activation="relu",
@@ -60,7 +60,7 @@ def conv3d_block(
 def downconv_model_3d(
         input_shape,
         use_batch_norm=True,
-        dropout=0.5,
+        dropout=0.0,#0.5,
         dropout_change_per_layer=0.0,
         filters=16,
         num_layers=4,
@@ -98,7 +98,7 @@ def upconv_model_3d(
         use_batch_norm=True,
         upsample_mode="deconv",  # 'deconv' or 'simple'
         use_dropout_on_upsampling=True,
-        dropout=0.5,
+        dropout=0.0,#0.5,
         dropout_change_per_layer=0.0,
         filters=128,
         down_layers=(),
@@ -136,7 +136,7 @@ def custom_unet_3d(
         use_batch_norm=True,
         upsample_mode="deconv",  # 'deconv' or 'simple'
         use_dropout_on_upsampling=False,
-        dropout=0.3,
+        dropout=0.0,#0.3,
         dropout_change_per_layer=0.0,
         filters=16,
         num_layers=4,
