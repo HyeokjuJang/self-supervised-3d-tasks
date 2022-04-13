@@ -1,20 +1,16 @@
 {
     "algorithm": "cpc",
-    "data_dir": "/data2/brain_mri/dataset_145_145_145/",
+    "data_dir": "D:\\mri\\dataset_128_128_128\\dataset_128_128_128",
     "dataset_name": "mri_gather",
-
     "data_is_3D": true,
-
     "code_size": 1024,
     "enc_filters": 16,
     "patches_per_side": 4,
     "data_dim": 128,
-
-    "top_architecture": "big_fully",
+    "top_architecture": "simple_binaryclass",
     "number_channels": 1,
-    "batch_size": 32,
+    "batch_size": 2,
     "embed_dim": 64,
-
     "lr": 1e-4,
-    "epochs": 30
+    "epochs": 10
 }
