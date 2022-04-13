@@ -60,7 +60,7 @@ def conv3d_block(
 def downconv_model_3d(
         input_shape,
         use_batch_norm=True,
-        dropout=0.5,#0.5,
+        dropout=0.0,#0.5,
         dropout_change_per_layer=0.0,
         filters=16,
         num_layers=4,
