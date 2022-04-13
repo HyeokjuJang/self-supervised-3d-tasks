@@ -1,6 +1,6 @@
 {
     "algorithm": "cpc",
-    "data_dir": "/data2/brain_mri/mri_gather_npy/",
+    "data_dir": "/data2/brain_mri/dataset_145_145_145/",
     "dataset_name": "mri_gather",
 
     "data_is_3D": true,

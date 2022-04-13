@@ -32,9 +32,12 @@ def simple_multiclass(inputs, dropout_rate=0.5, include_top=True, **kwargs):
     return net
 
 
-def simple_binaryclass(inputs, num_classes, dropout_rate=0.5, include_top=True, **kwargs):
+def simple_binaryclass(inputs, num_classes, dropout_rate=0.3, include_top=True, **kwargs):
     net = Flatten()(inputs)
-    net = Dense(1024, activation="relu")(net)
+    net = Dense(256, activation="relu")(net)
+    net = BatchNormalization()(net)
+    net = Dropout(rate=dropout_rate)(net)
+    net = Dense(256, activation="relu")(net)
     net = BatchNormalization()(net)
     net = Dropout(rate=dropout_rate)(net)
 

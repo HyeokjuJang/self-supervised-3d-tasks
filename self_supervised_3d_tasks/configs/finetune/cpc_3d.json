@@ -2,19 +2,14 @@
     "algorithm": "cpc",
     "data_dir_train": "mri_cube_npy/",
     "data_dir_test": "test_data/",
-    "model_checkpoint": "",
+    "model_checkpoint": "workspace/cpc_mri_gather",
     "dataset_name": "mri_data",
     "train_data_generator_args": { "label_stem": "" },
     "val_data_generator_args": { "label_stem": "" },
     "test_data_generator_args": { "label_stem": "" },
 
     "data_is_3D": true,
-    "val_split": 0.05,
-
-    "code_size": 1024,
-    "enc_filters": 16,
-    "patches_per_side": 4,
-    "data_dim": 128,
+    "val_split": 0.2,
 
     "loss": "weighted_dice_loss",
     "scores": ["dice", "jaccard", "dice_pancreas_0", "dice_pancreas_1"],
@@ -24,7 +19,7 @@
     "prediction_architecture": "simple_binaryclass",
     "pooling": "max",
     "number_channels": 1,
-    "batch_size": 2,
+    "batch_size": 1,
 
     "exp_splits": [100],
     "lr": 1e-3,

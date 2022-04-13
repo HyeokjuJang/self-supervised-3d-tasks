@@ -2,7 +2,7 @@ name: ss3d
 dependencies:
     - tensorflow-gpu=2.2.0
     - absl-py
-    - h5py
+    - h5py=2.10
     - hdf5
     - pandas
     - python
