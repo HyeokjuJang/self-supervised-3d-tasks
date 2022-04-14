@@ -63,7 +63,7 @@ def downconv_model(
         dropout=0.5,
         dropout_change_per_layer=0.0,
         filters=16,
-        num_layers=4,
+        num_layers=3,
         pooling=None
 ):
     inputs = Input(input_shape)
