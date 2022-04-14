@@ -18,6 +18,7 @@ def get_data_generators_internal(data_path, files, data_generator, train_split=N
         val_split = int(len(files) * val_split)
 
         # Do not leak data on validation set
+        """
         if data_path == "mri_cube_npy/":
 
             files = sorted(files)
@@ -59,7 +60,7 @@ def get_data_generators_internal(data_path, files, data_generator, train_split=N
 
             train_split = train_split_ad + train_split_cn
             val_split = val_split_ad + val_split_cn
-
+        """
         # Create lists
         train = files[0:train_split]
         val = files[train_split:train_split + val_split]

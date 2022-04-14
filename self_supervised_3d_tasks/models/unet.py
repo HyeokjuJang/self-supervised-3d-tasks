@@ -139,7 +139,7 @@ def custom_unet(
         dropout=0.3,
         dropout_change_per_layer=0.0,
         filters=16,
-        num_layers=4,
+        num_layers=3,
         output_activation="sigmoid",  # 'sigmoid' or 'softmax'
 ):
     downconv, data = downconv_model(

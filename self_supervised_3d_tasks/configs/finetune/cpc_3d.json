@@ -15,7 +15,7 @@
     "scores": ["dice", "jaccard", "dice_pancreas_0", "dice_pancreas_1"],
     "metrics": ["accuracy", "weighted_dice_coefficient", "weighted_dice_coefficient_per_class_pancreas"],
 
-    "top_architecture": "big_fully",
+    "top_architecture": "simple_binaryclass",
     "prediction_architecture": "simple_binaryclass",
     "pooling": "max",
     "number_channels": 1,

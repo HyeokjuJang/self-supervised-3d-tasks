@@ -292,7 +292,7 @@ def make_finetuning_encoder_3d(input_shape, enc_model, **kwargs):
 
 def apply_encoder_model_3d(
         input_shape,
-        num_layers=4,
+        num_layers=3,
         pooling="max",
         encoder_architecture=None,
         enc_filters=8,
@@ -302,7 +302,7 @@ def apply_encoder_model_3d(
 
     if pooling == "none":
         pooling = None
-
+    
     if encoder_architecture is not None:
         model, layer_data = get_encoder_model_3d(
             encoder_architecture, input_shape)
@@ -316,7 +316,7 @@ def apply_encoder_model_3d(
 
 def apply_encoder_model(
         input_shape,
-        num_layers=4,
+        num_layers=3,
         pooling="max",
         encoder_architecture=None,
         enc_filters=16,
